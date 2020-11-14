@@ -1,0 +1,8 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "vetur.experimental.templateInterpolationService": true,
+  "mocha.requires": [
+    "ts-node/register"
+],
+"mocha.files.glob": "./test/**/*.ts"
+}

@@ -1,0 +1,64 @@
+{
+  "name": "meu_dinheiro",
+  "version": "0.0.1",
+  "description": "A Quasar Framework app",
+  "productName": "Quasar App",
+  "author": "Andre <andreferreiratrindade@gmail.com>",
+  "private": true,
+  "scripts": {
+    "test": "NODE_PATH=./src mocha ./src/**/test/spec.js --compilers js:babel-core/register --recursive"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.18.1",
+    "cheerio": "^1.0.0-rc.3",
+    "core-js": "^3.6.5",
+    "cors": "^2.8.5",
+    "fetch": "^1.1.0",
+    "firebase": "^8.0.2",
+    "fs": "0.0.1-security",
+    "inversify": "^5.0.1",
+    "linq-to-typescript": "^6.0.1",
+    "nedb": "^1.8.0",
+    "nyc": "^15.1.0",
+    "pdfreader": "^1.2.7",
+    "quasar": "^1.0.0",
+    "reflect-metadata": "^0.1.13",
+    "vue-axios-cors": "^1.0.1",
+    "vue-class-component": "^7.2.2",
+    "vue-property-decorator": "^8.3.0"
+  },
+  "devDependencies": {
+    "@quasar/app": "^2.0.0",
+    "@types/axios": "^0.14.0",
+    "@types/chai": "4.2.11",
+    "@types/cheerio": "^0.22.22",
+    "@types/mocha": "7.0.2",
+    "@types/node": "^10.17.15",
+    "chai": "4.2.0",
+    "devtron": "^1.4.0",
+    "electron": "^9.3.2",
+    "electron-debug": "^3.1.0",
+    "electron-devtools-installer": "^3.1.1",
+    "electron-packager": "^14.2.1",
+    "mocha": "7.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}
