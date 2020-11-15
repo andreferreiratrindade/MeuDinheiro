@@ -4,13 +4,14 @@ import { IWrite } from "./interfaces/IWirte";
 // import * as firebase from 'firebase/app';
 import {db} from 'src/boot/firebase'
 
+import * as firebase from 'firebase/app'
+
 @injectable()
 export abstract class BaseRepository implements IWrite, IRead {
 	_collectionName: string = "";
-	protected db: any;
+	protected db!: firebase.default.firestore.Firestore;
 
 	constructor() {
-		debugger
 		this.db = db;
 	}
 	update(id: string, item: any): Promise<boolean> {
@@ -41,14 +42,14 @@ export abstract class BaseRepository implements IWrite, IRead {
 			let ref = this.db.collection(this._collectionName)
 				.where(filter.elemento, filter.tipoComparacao, filter.comparacao)
 				.get()
-				.then((result : any[]) => {
+				.then((result) => {
 
-					let lst : any[] = [];
-					result.forEach(function (doc: any) {
+						let lst: any[] = [];
+						result.forEach(function (doc: any) {
 
-						lst.push({ data: doc.data(), id: doc.id });
-					})
-					resolve(lst);
+							lst.push({ data: doc.data(), id: doc.id });
+						});
+						resolve(lst);
 				})
 				.catch(function (error: any) {
 					reject(error)

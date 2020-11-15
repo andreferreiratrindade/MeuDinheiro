@@ -2,7 +2,7 @@ import { _model } from "src/models/_models";
 
 export interface INotaCorretagemService{
 
-    recuperaNotasCorretagens(): _model.OrdemModel[]
+    recuperaNotasCorretagens(usuarioId:string): Promise<_model.OrdemModel[]>
 
     recuperaArquivoNotasCorretagens():Promise<any>
 

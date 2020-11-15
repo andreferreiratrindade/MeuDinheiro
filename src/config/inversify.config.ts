@@ -16,6 +16,8 @@ import { IUsuarioService } from "src/services/interfaces/IUsuarioService";
 import { UsuarioService } from "src/services/UsuarioService";
 import { IAuthService } from "src/services/interfaces/IAuthService";
 import { AuthService } from "src/services/AuthService";
+import { INotaCorretagemRepository } from "src/repository/interfaces/INotaCorretagemRepository";
+import { NotaCorretagemRepository } from "src/repository/NotaCorretagemRepository";
 
 const myContainer = new Container();
 myContainer.bind<ICalculoService>(TYPES.CalculadoraService).to(CalculoService);
@@ -48,4 +50,10 @@ myContainer
   .bind<IAuthService>(TYPES.AuthService)
   .to(AuthService);
 
+  myContainer
+  .bind<INotaCorretagemRepository>(TYPES.NotaCorretagemRepository)
+  .to(NotaCorretagemRepository);
+
+
+  
 export default { myContainer };

@@ -6,7 +6,10 @@ const TYPES = {
     AcaoMonitoradaService: Symbol.for("AcaoMonitoradaService"),
     UsuarioRepository: Symbol.for("UsuarioRepository"),
     UsuarioService: Symbol.for("UsuarioService"),
-    AuthService: Symbol.for("AuthService")
+    AuthService: Symbol.for("AuthService"),
+    NotaCorretagemRepository: Symbol.for("NotaCorretagemRepository")
+
+    
 };
  
 export { TYPES };

@@ -17,7 +17,7 @@ export class OrdemConfig {
 
   public montaOrdem(){
     let notaCorretagemService = myContainer.myContainer.get<INotaCorretagemService>(TYPES.NotaCorretagemService)
-    this.ordens = notaCorretagemService.recuperaNotasCorretagens()
+    // this.ordens = notaCorretagemService.recuperaNotasCorretagens()
   }
 
   public recuperaOrdens(){
