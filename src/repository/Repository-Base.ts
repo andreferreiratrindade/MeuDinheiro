@@ -43,11 +43,11 @@ export abstract class BaseRepository implements IWrite, IRead {
 				.where(filter.elemento, filter.tipoComparacao, filter.comparacao)
 				.get()
 				.then((result) => {
-
+					debugger
 						let lst: any[] = [];
 						result.forEach(function (doc: any) {
 
-							lst.push({ data: doc.data(), id: doc.id });
+							lst.push( doc.data());
 						});
 						resolve(lst);
 				})

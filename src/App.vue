@@ -4,18 +4,14 @@
     <router-view /> 
     
   </div>
-</template>
-<script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import {OrdemConfig} from '../src/services/OrdemConfig'
-@Component
-export default class App extends Vue {
-
-
- mounted() {
-      
-     // OrdemConfig.recuperaInstancia().montaOrdem();
+</template><script>
+import { mapActions } from "vuex";
+export default {
+  methods:{
+    ...mapActions('auth', ['handleAuthStateChange'])
+  },
+  mounted(){
+    this.handleAuthStateChange()
   }
-
 }
 </script>

@@ -3,12 +3,13 @@ const TYPES = {
     NotaCorretagemService: Symbol.for("NotaCorretagemService"),
     AtivoBovespaService: Symbol.for("AtivoBovespaService"),
     PosicaoAtualService: Symbol.for("PosicaoAtualService"),
-    AcaoMonitoradaService: Symbol.for("AcaoMonitoradaService"),
+    PapelFavoritoService: Symbol.for("PapelFavoritoService"),
     UsuarioRepository: Symbol.for("UsuarioRepository"),
     UsuarioService: Symbol.for("UsuarioService"),
     AuthService: Symbol.for("AuthService"),
-    NotaCorretagemRepository: Symbol.for("NotaCorretagemRepository")
-
+    NotaCorretagemRepository: Symbol.for("NotaCorretagemRepository"),
+    PapelFavoritoRepository: Symbol.for("PapelFavoritoRepository")
+    
     
 };
  

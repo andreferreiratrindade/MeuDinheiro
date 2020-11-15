@@ -22,7 +22,9 @@ module.exports = configure(function (/* ctx */) {
     boot: [
       
       'axios',
-      'firebase'
+      'firebase',
+      'router-auth'
+      // 'notify-defaults'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -34,7 +36,7 @@ module.exports = configure(function (/* ctx */) {
     extras: [
       // 'ionicons-v4',
       // 'mdi-v5',
-      // 'fontawesome-v5',
+       'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
@@ -82,7 +84,7 @@ module.exports = configure(function (/* ctx */) {
     framework: {
       iconSet: 'material-icons', // Quasar icon set
       lang: 'pt-br', // Quasar language pack
-      config: {},
+      config: {loading:{}, notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }},
 
       // Possible values for "importStrategy":
       // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives
@@ -97,7 +99,7 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['Notify','Loading' ]
     },
 
     // animations: 'all', // --- includes all animations

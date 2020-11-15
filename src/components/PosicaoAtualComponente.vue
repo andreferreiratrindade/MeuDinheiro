@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <q-card class="my-card " flat bordered>
+  <div >
+    <q-card class="my-card" flat bordered>
       <q-card-section >
         <q-card-section  horizontal class="row justify-between"> 
    

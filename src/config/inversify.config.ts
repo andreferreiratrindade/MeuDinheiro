@@ -8,8 +8,8 @@ import { IAtivoBovespaService } from "src/services/interfaces/IAtivoBovespaServi
 import { AtivoBovespaService } from "src/services/AtivoBovespaService";
 import { IPosicaoAtualService } from "src/services/interfaces/IPosicaoAtualService";
 import { PosicaoAtualService } from "src/services/PosicaoAtualService";
-import { IAcaoMonitoradaService } from "src/services/interfaces/IAcaoMonitoradaService";
-import { AcaoMonitoradaService } from "src/services/AcaoMonitoradaService";
+import { IPapelFavoritoService } from "src/services/interfaces/IPapelFavoritoService";
+import { PapelFavoritoService } from "src/services/PapelFavoritoService";
 import { IUsuarioRepository } from "src/repository/interfaces/IUsuarioRepository";
 import { UsuarioRepository } from "src/repository/UsuarioRepository";
 import { IUsuarioService } from "src/services/interfaces/IUsuarioService";
@@ -18,6 +18,8 @@ import { IAuthService } from "src/services/interfaces/IAuthService";
 import { AuthService } from "src/services/AuthService";
 import { INotaCorretagemRepository } from "src/repository/interfaces/INotaCorretagemRepository";
 import { NotaCorretagemRepository } from "src/repository/NotaCorretagemRepository";
+import { IPapelFavoritoRepository } from "src/repository/interfaces/IPapelFavoritoRepository";
+import { PapelFavoritoRepository } from "src/repository/PapelFavoritoRepository";
 
 const myContainer = new Container();
 myContainer.bind<ICalculoService>(TYPES.CalculadoraService).to(CalculoService);
@@ -34,9 +36,6 @@ myContainer
   .bind<IPosicaoAtualService>(TYPES.PosicaoAtualService)
   .to(PosicaoAtualService);
   
-  myContainer
-  .bind<IAcaoMonitoradaService>(TYPES.AcaoMonitoradaService)
-  .to(AcaoMonitoradaService);
 
   myContainer
   .bind<IUsuarioRepository>(TYPES.UsuarioRepository)
@@ -54,6 +53,12 @@ myContainer
   .bind<INotaCorretagemRepository>(TYPES.NotaCorretagemRepository)
   .to(NotaCorretagemRepository);
 
+  myContainer
+  .bind<IPapelFavoritoRepository>(TYPES.PapelFavoritoRepository)
+  .to(PapelFavoritoRepository);
 
+  myContainer
+  .bind<IPapelFavoritoService>(TYPES.PapelFavoritoService)
+  .to(PapelFavoritoService);
   
 export default { myContainer };

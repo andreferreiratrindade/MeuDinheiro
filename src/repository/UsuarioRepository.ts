@@ -13,7 +13,6 @@ export class UsuarioRepository extends BaseRepository  implements IUsuarioReposi
   }
 
   adicionaPerfilAoUsuario(usuario: _model.Usuario, perfil: number):Promise<any> {
-    debugger
     let ref = this.db.collection(this._collectionName).doc(usuario.usuarioId)
     let ob = [perfil]
     return new Promise<any>((retorno, reject) => {

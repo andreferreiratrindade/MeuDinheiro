@@ -1,8 +1,8 @@
 {
   "name": "meu_dinheiro",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "App de gerenciamento de dinheiro",
+  "productName": "Meu dinheiro",
   "author": "Andre <andreferreiratrindade@gmail.com>",
   "private": true,
   "scripts": {
@@ -24,9 +24,12 @@
     "pdfreader": "^1.2.7",
     "quasar": "^1.0.0",
     "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.6.3",
+    "vue": "^2.6.12",
     "vue-axios-cors": "^1.0.1",
     "vue-class-component": "^7.2.2",
-    "vue-property-decorator": "^8.3.0"
+    "vue-property-decorator": "^8.3.0",
+    "vue-rx": "^6.2.0"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

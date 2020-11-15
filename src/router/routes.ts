@@ -5,7 +5,7 @@ const routes: RouteConfig[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      // { path: '', component: () => import('pages/Index.vue') },
+       { path: '', component: () => import('pages/Index.vue') },
       {
         path: 'ArquivoNotaCorretagem',
         name: 'arquivoNotaCorretagem',
@@ -22,12 +22,12 @@ const routes: RouteConfig[] = [
         component: () => import('pages/PainelGerencial/PainelGerencialList.vue')
       },
       {
-        path: '',
+        path: '/auth-register',
         name: 'register',
         component: () => import('pages/Auth/Register.vue')
       },
       {
-        path: 'login',
+        path: '/auth-login',
         name: 'login',
         component: () => import('pages/Auth/Login.vue')
       },

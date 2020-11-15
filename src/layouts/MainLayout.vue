@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Meu Dinheiro
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
@@ -56,7 +56,7 @@ const linksData = [
     title: 'Painel Gerencial',
     caption: '',
     icon: 'school',
-    link: '/#/'
+    link: '/#/PainelGerencial'
   },
   {
     title: 'Notas de Corretagens',

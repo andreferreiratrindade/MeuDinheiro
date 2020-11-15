@@ -18,9 +18,13 @@ import { IUsuarioService } from './interfaces/IUsuarioService'
     }
 
     adicionarUsuario(usuario: _model.Usuario, perfil:number): Promise<any> {
-        return new Promise<any>((resolve, rejects) => {
-            this._usuarioRepository.add(usuario, usuario.usuarioId);
-        });
+        return  this._usuarioRepository.add(usuario, usuario.usuarioId);
+      
+    }
+
+    findOne(uid:string): Promise<any>{
+        return this._usuarioRepository.findOne(uid);
+
     }
 }
 

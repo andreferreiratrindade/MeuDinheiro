@@ -1,11 +1,12 @@
 import { inject, injectable } from "inversify";
+import { Subject } from "rxjs";
 import { TYPES } from "src/config/types";
 import { Constants } from "src/constants/constants";
-import { _model } from "src/models/_models";
-import {firebaseAuth} from "../boot/firebase"
+import NotifyHelper from "src/helpers/NotifyHelpter";
+import model, { _model } from "src/models/_models";
+import { firebaseAuth } from "../boot/firebase"
 import { IAuthService } from "./interfaces/IAuthService";
 import { IUsuarioService } from "./interfaces/IUsuarioService";
-
 
 @injectable()
 class AuthService implements IAuthService {
@@ -16,6 +17,8 @@ class AuthService implements IAuthService {
 
     public _usuarioService !: IUsuarioService
 
+    // private usuarioSubject = new Subject<_model.Usuario>();
+
     public novoCadastro(usuario: _model.UsuarioLogin): Promise<any> {
         return new Promise<any>((resolver, reject) => {
             firebaseAuth
@@ -25,37 +28,56 @@ class AuthService implements IAuthService {
                         email: usuario.email,
                         nome: usuario.nome,
                         usuarioId: data.user?.uid ?? "",
-                        perfis:[1]
+                        perfis: [1]
                     }
 
                     data.user?.updateProfile({
                         displayName: usuario.nome
                     }).then((res) => {
-                        this._usuarioService.adicionarUsuario(usuariotmp, Constants.PerfilUsuario.Cliente);
-                        resolver(res);
+                        this._usuarioService.adicionarUsuario(usuariotmp, Constants.PerfilUsuario.Cliente)
+
+                        resolver(NotifyHelper.sucesso());
                     });
                 })
                 .catch(err => {
-                    reject(err);
+                    reject(NotifyHelper.erro(err));
                 });
         });
     }
 
-    public login(usuario: _model.UsuarioLogin): Promise<any> {
+    public login(usuarioLogin: _model.UsuarioLogin): Promise<any> {
+
+
         return new Promise<any>((resolver, reject) => {
             firebaseAuth
-                .signInWithEmailAndPassword(usuario.email, usuario.password)
-                .then(data => {
-                    data.user?.updateProfile({
-                        displayName: usuario.nome
-                    }).then((res) => {
-                        resolver(res);
-                    });
+                .signInWithEmailAndPassword(usuarioLogin.email, usuarioLogin.password)
+                .then(user => {
+
+
+                    if (user != null && user.user != null) {
+
+                        let usuario : _model.Usuario = {
+                            email: user.user.email ?? "",
+                            nome: user.user.displayName ?? "",
+                            perfis: [],
+                            usuarioId: user.user.uid
+                        }
+                        resolver(user.user);
+                    } else {
+
+                        resolver(null);
+                    }
                 })
                 .catch(err => {
-                    reject(err);
+                    reject(NotifyHelper.erro("Usuário não encontrado."));
                 });
         });
+    }
+
+
+    recuperaUsuarioLogado():any {
+       let user = firebaseAuth.currentUser;
+        return user;
     }
 }
 

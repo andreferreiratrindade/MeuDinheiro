@@ -1,32 +1,72 @@
 <template>
-  <div class="q-pa-md" style="max-width: 400px">
-    <div v-if="error" class="alert alert-danger">{{ error }}</div>
-    <q-form @submit="submit" class="q-gutter-md">
-      <q-input
-        id="email"
-        type="text"
-        name="email"
-        label="E-mail"
-        value
-        required
-        autofocus
-        v-model="usuario.email"
-      />
-
-      <q-input
-        id="senha"
-        type="text"
-        name="senha"
-        label="Senha"
-        value
-        required
-        autofocus
-        v-model="usuario.password"
-      />
-
-      <q-btn type="submit" class="btn btn-primary">Login</q-btn>
-    </q-form>
-  </div>
+  <q-page
+    class="window-height window-width row justify-center items-center"
+    style="background: linear-gradient(#8274C5, #5A4A9F)"
+  >
+    <div class="column q-pa-lg">
+      <div class="row">
+        <q-form @submit="submit" class="q-px-sm q-pt-xl q-pb-lg">
+          <q-card square class="shadow-24" style="width: 300px; height: 485px">
+            <q-card-section class="bg-deep-purple-7">
+              <h4 class="text-h5 text-white q-my-md">Login</h4>
+            </q-card-section>
+            <q-card-section>
+              <q-input
+                square
+                clearable
+                v-model="usuario.email"
+                type="email"
+                label="E-mail"
+                value
+                required
+              >
+                <template v-slot:prepend>
+                  <q-icon name="email" />
+                </template>
+              </q-input>
+              <q-input
+                square
+                clearable
+                v-model="usuario.password"
+                type="password"
+                label="Senha"
+                value
+                require
+              >
+                <template v-slot:prepend>
+                  <q-icon name="lock" />
+                </template>
+              </q-input>
+            </q-card-section>
+            <q-card-actions class="q-px-lg">
+              <q-btn
+                unelevated
+                size="lg"
+                value
+                color="purple-4"
+                class="full-width text-white"
+                label="Login"
+                type="submit"
+              />
+            </q-card-actions>
+            <q-card-actions class="q-px-lg">
+              <q-btn
+                unelevated
+                size="lg"
+                color="purple-4"
+                class="full-width text-white"
+                label="Cadastre-se"
+                @click="$router.push('/register')"
+              />
+            </q-card-actions>
+            <q-card-section class="text-center q-pa-sm">
+              <p class="text-grey-6">Esqueceu sua senha?</p>
+            </q-card-section>
+          </q-card>
+        </q-form>
+      </div>
+    </div>
+  </q-page>
 </template>
 
 
@@ -40,9 +80,7 @@ import { TYPES } from "src/config/types";
 
 @Component
 export default class Login extends Vue {
-  private _authService: any = myContainer.myContainer.get<IAuthService>(
-    TYPES.NotaCorretagemService
-  );
+  _authService!: IAuthService;
 
   usuario: _model.UsuarioLogin = {
     email: "",
@@ -59,8 +97,14 @@ export default class Login extends Vue {
         this.$router.replace({ name: "painelGerencial" });
       })
       .catch((err: any) => {
-        this.error = err;
+        this.$q.notify(err);
       });
+  }
+
+  created(): void {
+    this._authService = myContainer.myContainer.get<IAuthService>(
+      TYPES.AuthService
+    );
   }
 }
 </script>

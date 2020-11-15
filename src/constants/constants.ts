@@ -4,7 +4,7 @@ export module Constants{
         public static arquivoNotaCorretagemInfo : string = "ImportacaoNotaCorretagemInfo.json";
         public static pathArquivoOriginalNotaCorretagem : string = "./arquivos/ArquivoOriginalNotaCorretagem";
         public static pathNotasDeCorretagens : string = "./arquivos/notasDeCorretagens.json";
-        public static pathArquivoAcaoMonitorada : string = "./arquivos/acoesMonitoradas.json";
+        public static pathArquivoPapelFavorito : string = "./arquivos/acoesMonitoradas.json";
 
     }
 
