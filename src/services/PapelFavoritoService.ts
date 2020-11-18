@@ -1,12 +1,13 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "src/config/types";
 import NotifyHelpter from "src/helpers/NotifyHelpter";
-import { _model } from "src/models/_models";
+import { _modelOutput } from "src/models/_modelsOutput";
 import { IAtivoBovespaService } from "./interfaces/IAtivoBovespaService";
 import { IPapelFavoritoRepository } from "src/repository/interfaces/IPapelFavoritoRepository";
 import { _helperModel } from "src/helpers/_helperModel";
 import { IPapelFavoritoService } from "./interfaces/IPapelFavoritoService";
 import { IAuthService } from './interfaces/IAuthService'
+import { _modelInput } from "src/models/_modelsInput";
 
 @injectable()
 class PapelFavoritoService implements IPapelFavoritoService {
@@ -21,23 +22,23 @@ class PapelFavoritoService implements IPapelFavoritoService {
     this._papelFavoritoRepository = papelFavoritoRepository;
     this._authService = authService;
   }
-  public recuperaPapeisFavoritos(): Promise< _model.AtivoDetalhesModel[]> {
-    let acoesMonitoradas: _model.AtivoDetalhesModel[] = []
+  public recuperaPapeisFavoritos(): Promise<_modelOutput.AtivoDetalhesOutputModel[]> {
     let filter: any = {
       comparacao: this._authService.recuperaUsuarioLogado().uid,
       elemento: "usuarioId",
       tipoComparacao: "=="
     }
 
-    return new Promise<_model.AtivoDetalhesModel[]>((result, rejects) => {
+    return new Promise<_modelOutput.AtivoDetalhesOutputModel[]>((result, rejects) => {
       this._papelFavoritoRepository.find(filter).then(papeisTemp => {
 
-        acoesMonitoradas = papeisTemp.map(y => {
+        let acoesMonitoradas: _modelOutput.AtivoDetalhesOutputModel[] = papeisTemp.map(y => {
           return {
-            Papel: y.papel,
-            RazaoSocial: "",
-            CotacaoAtual: 0,
-            Percentual: 0
+            papel: y.papel,
+            razaoSocial: "",
+            cotacaoAtual: 0,
+            percentual: 0,
+            loading: false
           }
         });
 
@@ -71,7 +72,7 @@ class PapelFavoritoService implements IPapelFavoritoService {
     // })
   }
 
-  public adicionarPapelFavorito(papelFavorito: _model.PapelFavorito): Promise<_helperModel.Notify> {
+  public adicionarPapelFavorito(papelFavorito: _modelInput.PapelFavoritoInputModel): Promise<_helperModel.Notify> {
 
     papelFavorito.papel = papelFavorito.papel.toUpperCase();
     papelFavorito.usuarioId = this._authService.recuperaUsuarioLogado().uid;

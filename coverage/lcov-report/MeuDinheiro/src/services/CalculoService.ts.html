@@ -211,7 +211,7 @@ class CalculoService implements ICalculoService{
         let lst : _model.PosicaoAtualModel[]=[];
 &nbsp;
         
-        const group = from(ordens).groupBy(y=&gt;y.Titulo).toArray();
+        const group = from(ordens).groupBy(y=&gt;y.Papel).toArray();
         
         group.forEach(element=&gt;{
            let ordensTemp =  element.orderBy(y=&gt;y.DataPregao).thenBy(y=&gt;y.OrdemPosicao).toArray();
@@ -235,14 +235,14 @@ class CalculoService implements ICalculoService{
         for (let index = 0; index &lt; ordens.length; index++) {
             const ordemAtual = ordens[index];
             
-            if (ordemAtual.CV == Constants.CV.COMPRA)
+            if (ordemAtual.TipoOrdem == Constants.TipoOrdem.COMPRA)
             {
-                liquido += ordemAtual.PrecoAjuste * ordemAtual.Quantidade * -1;
+                liquido += ordemAtual.Preco * ordemAtual.Quantidade * -1;
                 qtdEstoque += ordemAtual.Quantidade;
             }
-            else <span class="missing-if-branch" title="else path not taken" >E</span>if (ordemAtual.CV == Constants.CV.VENDA)
+            else <span class="missing-if-branch" title="else path not taken" >E</span>if (ordemAtual.TipoOrdem == Constants.TipoOrdem.VENDA)
             {
-                liquido += ordemAtual.PrecoAjuste * ordemAtual.Quantidade;
+                liquido += ordemAtual.Preco * ordemAtual.Quantidade;
                 qtdEstoque -= ordemAtual.Quantidade;
 &nbsp;
             }
@@ -257,7 +257,7 @@ class CalculoService implements ICalculoService{
 &nbsp;
         <span class="missing-if-branch" title="else path not taken" >E</span>if (liquido &gt; 0)
         {
-            posicaoAtual =  { Valor : liquido / qtdEstoque, Quantidade : qtdEstoque, Papel :  ordens[0].Titulo, ValorTotal : liquido};
+            posicaoAtual =  { Valor : liquido / qtdEstoque, Quantidade : qtdEstoque, Papel :  ordens[0].Papel, ValorTotal : liquido};
         }
 &nbsp;
         return posicaoAtual ;

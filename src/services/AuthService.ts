@@ -3,7 +3,7 @@ import { Subject } from "rxjs";
 import { TYPES } from "src/config/types";
 import { Constants } from "src/constants/constants";
 import NotifyHelper from "src/helpers/NotifyHelpter";
-import model, { _model } from "src/models/_models";
+import { _modelInput } from "src/models/_modelsInput";
 import { firebaseAuth } from "../boot/firebase"
 import { IAuthService } from "./interfaces/IAuthService";
 import { IUsuarioService } from "./interfaces/IUsuarioService";
@@ -19,12 +19,12 @@ class AuthService implements IAuthService {
 
     // private usuarioSubject = new Subject<_model.Usuario>();
 
-    public novoCadastro(usuario: _model.UsuarioLogin): Promise<any> {
+    public novoCadastro(usuario: _modelInput.UsuarioLoginInputModel): Promise<any> {
         return new Promise<any>((resolver, reject) => {
             firebaseAuth
                 .createUserWithEmailAndPassword(usuario.email, usuario.password)
                 .then(data => {
-                    let usuariotmp: _model.Usuario = {
+                    let usuariotmp: _modelInput.UsuarioInputModel = {
                         email: usuario.email,
                         nome: usuario.nome,
                         usuarioId: data.user?.uid ?? "",
@@ -45,7 +45,7 @@ class AuthService implements IAuthService {
         });
     }
 
-    public login(usuarioLogin: _model.UsuarioLogin): Promise<any> {
+    public login(usuarioLogin: _modelInput.UsuarioLoginInputModel): Promise<any> {
 
 
         return new Promise<any>((resolver, reject) => {
@@ -56,7 +56,7 @@ class AuthService implements IAuthService {
 
                     if (user != null && user.user != null) {
 
-                        let usuario : _model.Usuario = {
+                        let usuario : _modelInput.UsuarioInputModel = {
                             email: user.user.email ?? "",
                             nome: user.user.displayName ?? "",
                             perfis: [],

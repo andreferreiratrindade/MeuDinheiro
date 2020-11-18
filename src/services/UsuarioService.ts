@@ -2,7 +2,8 @@ import { rejects } from 'assert'
 import { resolve } from 'dns'
 import { inject, injectable } from 'inversify'
 import { TYPES } from 'src/config/types'
-import { _model } from 'src/models/_models'
+import { _modelOutput } from 'src/models/_modelsOutput'
+import { _modelInput } from 'src/models/_modelsInput'
 import { IUsuarioRepository } from 'src/repository/interfaces/IUsuarioRepository'
 import { IUsuarioService } from './interfaces/IUsuarioService'
 
@@ -17,14 +18,13 @@ import { IUsuarioService } from './interfaces/IUsuarioService'
         this._usuarioRepository = usuarioRepository;
     }
 
-    adicionarUsuario(usuario: _model.Usuario, perfil:number): Promise<any> {
+    adicionarUsuario(usuario: _modelInput.UsuarioInputModel, perfil:number): Promise<any> {
         return  this._usuarioRepository.add(usuario, usuario.usuarioId);
       
     }
 
     findOne(uid:string): Promise<any>{
         return this._usuarioRepository.findOne(uid);
-
     }
 }
 

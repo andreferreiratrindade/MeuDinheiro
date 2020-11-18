@@ -1,6 +1,6 @@
-import { _model } from "src/models/_models";
+import { _modelInput } from "src/models/_modelsInput";
 
 export interface IUsuarioService {
-    adicionarUsuario(usuario: _model.Usuario, perfil:number): Promise<any> ;
+    adicionarUsuario(usuario: _modelInput.UsuarioInputModel, perfil:number): Promise<any> ;
     findOne(uid:string): Promise<any>;
 }

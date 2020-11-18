@@ -1,5 +1,5 @@
-import { _model } from "src/models/_models";
+import { _modelOutput } from "src/models/_modelsOutput";
 
 export interface IPosicaoAtualService{
-    recuperaPosicaoAtualCarteira(ordens: _model.OrdemModel[]):Promise<_model.PosicaoAtualModel[]>
+    recuperaPosicaoAtualCarteira(ordens: _modelOutput.OrdemOutputModel[]):Promise<_modelOutput.PosicaoAtualOutputModel[]>
 }

@@ -1,6 +1,7 @@
 
 import { injectable } from 'inversify';
-import { _model } from 'src/models/_models';
+import { _modelOutput } from 'src/models/_modelsOutput';
+import {_modelInput} from 'src/models/_modelsInput';
 import { IUsuarioRepository } from './interfaces/IUsuarioRepository';
 import { BaseRepository } from './Repository-Base'
 
@@ -12,7 +13,7 @@ export class UsuarioRepository extends BaseRepository  implements IUsuarioReposi
     this._collectionName = "usuario";
   }
 
-  adicionaPerfilAoUsuario(usuario: _model.Usuario, perfil: number):Promise<any> {
+  adicionaPerfilAoUsuario(usuario: _modelInput.UsuarioInputModel, perfil: number):Promise<any> {
     let ref = this.db.collection(this._collectionName).doc(usuario.usuarioId)
     let ob = [perfil]
     return new Promise<any>((retorno, reject) => {

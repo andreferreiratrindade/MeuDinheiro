@@ -1,9 +1,8 @@
 import { Subject } from "rxjs";
-import { _model } from "src/models/_models";
+import { _modelInput } from "src/models/_modelsInput";
 
 export interface IAuthService{
-
-   novoCadastro(usuario: _model.UsuarioLogin): Promise<any>;
-   login(usuario: _model.UsuarioLogin): Promise<any>;
+   novoCadastro(usuario: _modelInput.UsuarioLoginInputModel): Promise<any>;
+   login(usuario: _modelInput.UsuarioLoginInputModel): Promise<any>;
    recuperaUsuarioLogado():any;
 }

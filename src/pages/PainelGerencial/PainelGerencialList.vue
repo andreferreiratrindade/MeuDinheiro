@@ -11,9 +11,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { _model } from "src/models/_models";
 import PosicaoAtualComponente from "src/components/PosicaoAtualComponente.vue";
-import { OrdemConfig } from "src/services/OrdemConfig";
 import PapeisFavoritosComponente from "src/components/PapeisFavoritosComponente.vue";
 import LucroRealizadoComponente from "src/components/LucroRealizadoComponente.vue"
 @Component({

@@ -1,9 +1,9 @@
 import { _helperModel } from "src/helpers/_helperModel";
-import { _model } from "src/models/_models";
-
+import { _modelOutput } from "src/models/_modelsOutput";
+import {_modelInput} from "src/models/_modelsInput";
 export interface IPapelFavoritoService{
-    recuperaPapeisFavoritos(): Promise< _model.AtivoDetalhesModel[]>;
+    recuperaPapeisFavoritos(): Promise< _modelOutput.AtivoDetalhesOutputModel[]>;
 
-    adicionarPapelFavorito(papelFavorito: _model.PapelFavorito): Promise<_helperModel.Notify>
+    adicionarPapelFavorito(papelFavorito: _modelInput.PapelFavoritoInputModel): Promise<_helperModel.Notify>
     
 }

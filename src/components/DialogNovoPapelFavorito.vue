@@ -17,7 +17,6 @@
         <q-card-actions align="right">
           <q-btn color="primary" label="Adicionar" type="submit" value/>
           <q-btn
-            color="default"
             label="Cancelar"
             @click="$emit('close')"
              value
@@ -34,19 +33,27 @@ import { IPapelFavoritoService } from "src/services/interfaces/IPapelFavoritoSer
 import { Component, Prop, Vue } from "vue-property-decorator";
 import myContainer from "src/config/inversify.config";
 import { TYPES } from "src/config/types";
-import { _model } from "src/models/_models";
+import { _modelInput } from "src/models/_modelsInput";
 
 @Component
 export default class DialogNovoPapelFavorito extends Vue {
   private _papelFavoritoService!: IPapelFavoritoService;
 
-  @Prop()
-  showModal!: boolean;
+  @Prop({ type: Function, default: () => false })
+	readonly refreshTable!: Function;
 
-  papelFavorito: _model.PapelFavorito = {
+
+  showModal: boolean = false;
+
+  papelFavorito: _modelInput.PapelFavoritoInputModel = {
     papel: "",
     usuarioId: "",
   };
+
+  public show(){
+    console.log('Teste')
+    this.showModal = true;
+  }
 
   public adicionarPapelFavorito() {
     this._papelFavoritoService
@@ -54,6 +61,7 @@ export default class DialogNovoPapelFavorito extends Vue {
       .then((result: any) => {
         this.$q.notify(result);
         this.papelFavorito.papel = "";
+        this.refreshTable();
       })
       .catch((err: any) => {
         this.$q.notify(err);

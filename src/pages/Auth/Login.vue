@@ -73,7 +73,7 @@
 <script lang="ts">
 import { IAuthService } from "src/services/interfaces/IAuthService";
 import { Component, Vue } from "vue-property-decorator";
-import { _model } from "src/models/_models";
+import { _modelInput } from "src/models/_modelsInput";
 import { inject, injectable } from "inversify";
 import myContainer from "src/config/inversify.config";
 import { TYPES } from "src/config/types";
@@ -82,7 +82,7 @@ import { TYPES } from "src/config/types";
 export default class Login extends Vue {
   _authService!: IAuthService;
 
-  usuario: _model.UsuarioLogin = {
+  usuario: _modelInput.UsuarioLoginInputModel = {
     email: "",
     password: "",
     nome: "",

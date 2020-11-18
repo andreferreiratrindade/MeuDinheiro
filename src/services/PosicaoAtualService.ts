@@ -1,33 +1,33 @@
 import { TYPES } from "src/config/types";
-import { _model } from "src/models/_models";
+import { _modelOutput } from "src/models/_modelsOutput";
 import { inject, injectable } from "inversify";
 import { IAtivoBovespaService } from "./interfaces/IAtivoBovespaService";
 import { ICalculoService } from "./interfaces/ICalculoService";
-import { INotaCorretagemService } from "./interfaces/INotaCorretagemService";
+import { IOrdemService } from "./interfaces/IOrdemService";
 import { IPosicaoAtualService } from "./interfaces/IPosicaoAtualService";
 @injectable()
 class PosicaoAtualService implements IPosicaoAtualService {
-  private _notaCorretageService: INotaCorretagemService;
+  private _notaCorretageService: IOrdemService;
   private _calculadoraService: ICalculoService;
   private _ativoBovespaService: IAtivoBovespaService;
   constructor(
-    @inject(TYPES.NotaCorretagemService)
-    notaCorretagemService: INotaCorretagemService,
+    @inject(TYPES.OrdemService)
+    OrdemService: IOrdemService,
     @inject(TYPES.CalculadoraService)
     calculadoraService: ICalculoService,
     @inject(TYPES.AtivoBovespaService)
     _ativoBovespaService: IAtivoBovespaService
   ) {
-    this._notaCorretageService = notaCorretagemService;
+    this._notaCorretageService = OrdemService;
     this._calculadoraService = calculadoraService;
     this._ativoBovespaService = _ativoBovespaService;
   }
 
-  recuperaPosicaoAtualCarteira(
-    ordens: _model.OrdemModel[]
-  ): Promise<_model.PosicaoAtualModel[]> {
+  async recuperaPosicaoAtualCarteira(
+    ordens: _modelOutput.OrdemOutputModel[]
+  ): Promise<_modelOutput.PosicaoAtualOutputModel[]> {
     let promises: any[] = [];
-    let posicalAtualLst: _model.PosicaoAtualModel[] = [];
+    let posicalAtualLst: _modelOutput.PosicaoAtualOutputModel[] = [];
 
     posicalAtualLst = this._calculadoraService.recuperaPosicaoAtualCarteira(
       ordens
@@ -35,9 +35,9 @@ class PosicaoAtualService implements IPosicaoAtualService {
     posicalAtualLst.forEach(posicaoAtual => {
       promises.push(
         this._ativoBovespaService
-          .recuperaDetalhesPapel(posicaoAtual.Papel)
+          .recuperaDetalhesPapel(posicaoAtual.papel)
           .then(result => {
-            posicaoAtual.AtivoDetalhes = result;
+            posicaoAtual.ativoDetalhes = result;
 
             return this._calculadoraService.montaValoresPosicalAtual(
               posicaoAtual
@@ -49,13 +49,12 @@ class PosicaoAtualService implements IPosicaoAtualService {
       );
     });
 
-    return Promise.all(promises)
-      .then(promiseAllResult => {
-        return promiseAllResult;
-      })
-      .catch(reject => {
-        throw reject;
-      });
+    try {
+      const promiseAllResult = await Promise.all(promises);
+      return promiseAllResult;
+    } catch (reject_1) {
+      throw reject_1;
+    }
   }
 }
 

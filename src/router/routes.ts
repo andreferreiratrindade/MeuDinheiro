@@ -7,14 +7,14 @@ const routes: RouteConfig[] = [
     children: [
        { path: '', component: () => import('pages/Index.vue') },
       {
-        path: 'ArquivoNotaCorretagem',
-        name: 'arquivoNotaCorretagem',
-        component: () => import('pages/ArquivoNotaCorretagem/ArquivoNotaCorretagemList.vue')
+        path: 'ArquivoOrdem',
+        name: 'arquivoOrdem',
+        component: () => import('pages/ArquivoOrdem/ArquivoOrdemList.vue')
       },
       {
-        path: 'NotaCorretagem',
-        name: 'notaCorretagem',
-        component: () => import('pages/NotaCorretagem/NotaCorretagemList.vue')
+        path: 'Ordem',
+        name: 'Ordem',
+        component: () => import('pages/Ordem/OrdemList.vue')
       },
       {
         path: 'PainelGerencial',
@@ -22,12 +22,12 @@ const routes: RouteConfig[] = [
         component: () => import('pages/PainelGerencial/PainelGerencialList.vue')
       },
       {
-        path: '/auth-register',
+        path: 'auth-register',
         name: 'register',
         component: () => import('pages/Auth/Register.vue')
       },
       {
-        path: '/auth-login',
+        path: 'auth-login',
         name: 'login',
         component: () => import('pages/Auth/Login.vue')
       },

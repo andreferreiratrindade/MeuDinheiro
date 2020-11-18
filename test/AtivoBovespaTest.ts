@@ -1,7 +1,7 @@
 import {describe} from 'mocha';
 import {expect} from 'chai';
 import {AtivoBovespaService} from '../src/services/AtivoBovespaService'
-import {_model} from 'src/models/_models'
+import {_modelOutput} from 'src/models/_modelsOutput'
 
 describe('Ativo Bovespa Service', () => {
 
@@ -11,7 +11,7 @@ describe('Ativo Bovespa Service', () => {
             let data : string = "abev3";
 
            return service.recuperaDetalhesPapel(data).then((result)=>{
-                expect(result.CotacaoAtual > 1).to.equals(true);
+                expect(result.cotacaoAtual > 1).to.equals(true);
            });
         })
     })

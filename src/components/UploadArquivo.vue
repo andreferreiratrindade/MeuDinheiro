@@ -10,12 +10,11 @@
       style="max-width: 400px"
     >
       <template v-slot:file="{ index, file }">
-        <q-chip
+         <q-chip
           class="full-width q-my-xs"
           :removable="isUploading && uploadProgress[index].percent < 1"
           square
-          @remove="cancelarArquivo(index)"
-        >
+        > 
           <q-linear-progress
             class="absolute-full full-height"
             :value="uploadProgress[index].percent"
@@ -54,7 +53,7 @@
 
 <script lang="ts">
 import {  Component, Vue } from "vue-property-decorator";
-import ArquivoNotaCorretagemService from "../services/ArquivoNotaCorretagemService"
+import ArquivoOrdemService from "../services/ArquivoOrdemService"
 @Component
 export default class UploadArquivo extends Vue {
 
@@ -72,7 +71,7 @@ export default class UploadArquivo extends Vue {
     }
 
 
-    ancelarArquivo (index:any) {
+    cancelarArquivo (index:any) {
       this.uploadProgress[index] = {
         ...this.uploadProgress[index],
         error: true,
@@ -145,11 +144,11 @@ export default class UploadArquivo extends Vue {
 
     salvaArquivo(file:any):Promise<any>{
       let nomeArquivo = file.name;
-      return ArquivoNotaCorretagemService.AdicionaArquivoNotaCorretagem(nomeArquivo,  file);
+      return ArquivoOrdemService.AdicionaArquivoOrdem(nomeArquivo,  file);
     }
 
     extraiNotasDeArquivo(file:any):Promise<any>{
-       return  ArquivoNotaCorretagemService.ExtrairNotasDeArquivo(file);
+       return  ArquivoOrdemService.ExtrairNotasDeArquivo(file);
     }
   
 

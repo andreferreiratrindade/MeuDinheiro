@@ -1,4 +1,4 @@
-import { _model } from "src/models/_models";
+import { _modelOutput } from "src/models/_modelsOutput";
 import { httpClient } from "./HttpClientService";
 import { IAtivoBovespaService } from "./interfaces/IAtivoBovespaService";
 import { IHttpClientRequestParameters } from "./interfaces/IHttpClientRequestParameters";
@@ -10,7 +10,7 @@ import cheerio from "cheerio";
 class AtivoBovespaService implements IAtivoBovespaService {
   async recuperaDetalhesPapel(
     papel: string
-  ): Promise<_model.AtivoDetalhesModel> {
+  ): Promise<_modelOutput.AtivoDetalhesOutputModel> {
     const getParameters: IHttpClientRequestParameters<any> = {
       url: `https://fundamentus.com.br/detalhes.php?papel=${papel}`,
       requiresToken: false
@@ -22,11 +22,12 @@ class AtivoBovespaService implements IAtivoBovespaService {
       const $ = cheerio.load(html); // Load the HTML string into cheerio
       const statsTable = $(".data.destaque.w3");
 
-      let detalheEmpresa: _model.AtivoDetalhesModel = {
-        Papel: papel,
-        RazaoSocial: "",
-        Percentual : 0,
-        CotacaoAtual: Number(statsTable[0].children[0].children[0].data?.replace(",","."))
+      let detalheEmpresa: _modelOutput.AtivoDetalhesOutputModel = {
+        papel: papel,
+        razaoSocial: "",
+        percentual : 0,
+        loading:true,
+        cotacaoAtual: Number(statsTable[0].children[0].children[0].data?.replace(",","."))
       };
 
       return detalheEmpresa;

@@ -1,16 +1,16 @@
 import { injectable } from 'inversify';
-import { _model } from 'src/models/_models';
-import { INotaCorretagemRepository } from './interfaces/INotaCorretagemRepository';
+import { _modelOutput } from 'src/models/_modelsOutput';
+import { IOrdemRepository } from './interfaces/IOrdemRepository';
 import { BaseRepository } from './Repository-Base'
 
 @injectable()
-export class NotaCorretagemRepository extends BaseRepository implements INotaCorretagemRepository {
+export class OrdemRepository extends BaseRepository implements IOrdemRepository {
 
     constructor() {
         super();
-        this._collectionName = "notaCorretagem";
+        this._collectionName = "Ordem";
     }
-    recuperaNotasCorretagens(usuarioId: string): Promise<_model.OrdemModel[]> {
+    recuperaNotasCorretagens(usuarioId: string): Promise<_modelOutput.OrdemOutputModel[]> {
         return new Promise<any>((resolve, reject) => {
 
             let query = this.db.collection(this._collectionName)
@@ -18,7 +18,7 @@ export class NotaCorretagemRepository extends BaseRepository implements INotaCor
                 .get()
                 .then((result) => {
 
-                    let lst: _model.OrdemModel[] = [];
+                    let lst: _modelOutput.OrdemOutputModel[] = [];
                     result.forEach(function (doc: any) {
 
                         lst.push(doc.data());

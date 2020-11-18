@@ -1,5 +1,4 @@
 import { injectable } from 'inversify';
-import { _model } from 'src/models/_models';
 import { IPapelFavoritoRepository } from './interfaces/IPapelFavoritoRepository';
 import { BaseRepository } from './Repository-Base'
 

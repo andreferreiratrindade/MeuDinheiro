@@ -1,47 +1,43 @@
 <template>
-  <div>
-    <q-card class="my-card" flat bordered >
-      <q-card-section color="red">
-        <q-card-section class="text-h6">
-          Papeis Favoritos
-          <q-btn
-            round
-            color="primary"
-            @click="showModal = true"
-          >
-<i class="fas fa-plus"></i>
-          </q-btn>
-        </q-card-section>
-        
+  <div class="q-pa-md" style="width: 350px">
+    <q-toolbar class="bg-secondary text-white shadow-2">
+      <q-toolbar-title>Papeis Favoritos</q-toolbar-title>
+      <q-btn round color="primary" @click="novoPapelFavorito">
+        <i class="fas fa-plus"></i>
+      </q-btn>
+    </q-toolbar>
 
-        <div class="q-pa-md row items-start q-gutter-md">
-          <q-card
-            class="my-card"
-            flat
-            bordered
-            vertical
-            v-for="(item, index) in papeisFavoritos"
-            :key="index"
-          >
-            <q-card-section color="red" horizontal>
-              <q-card-section class="text-h6">
-                {{ item.Papel }}
-              </q-card-section>
-              <q-card-section class="text-h6">
-                {{
-                  item.CotacaoAtual.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })
-                }}
-              </q-card-section>
-              <q-card-section class="text-h6"> 4,00% </q-card-section>
-            </q-card-section>
-          </q-card>
-        </div>
-      </q-card-section>
-    </q-card>
-    <dialog-novo-papel-favorito :showModal="showModal" @close="showModal = false"> </dialog-novo-papel-favorito>
+    <q-list bordered v-scroll >
+      <q-item
+        v-for="item in papeisFavoritos"
+        :key="item.papel"
+        class="q-my-sm"
+        clickable
+        v-ripple
+      >
+        <q-item-section>
+          {{ item.papel }}
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>{{
+            item.cotacaoAtual.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })
+          }}</q-item-label>
+        </q-item-section>
+
+        <q-item-section side>
+          {{ item.percentual }}
+        </q-item-section>
+      </q-item>
+    </q-list>
+    <dialog-novo-papel-favorito
+      ref="dialogNovoPapelFavorito"
+      :refreshTable="recuperaPapeisFavoritos"
+    >
+    </dialog-novo-papel-favorito>
   </div>
 </template>
 
@@ -50,8 +46,8 @@ import { Component, Vue } from "vue-property-decorator";
 import myContainer from "src/config/inversify.config";
 import { TYPES } from "src/config/types";
 import { IPapelFavoritoService } from "src/services/interfaces/IPapelFavoritoService";
-import { _model } from "src/models/_models";
-import DialogNovoPapelFavorito from "./DialogNovoPapelFavorito.vue"
+import { _modelOutput } from "src/models/_modelsOutput";
+import DialogNovoPapelFavorito from "./DialogNovoPapelFavorito.vue";
 
 @Component({
   components: { DialogNovoPapelFavorito },
@@ -59,30 +55,40 @@ import DialogNovoPapelFavorito from "./DialogNovoPapelFavorito.vue"
 export default class PapeisFavoritosComponente extends Vue {
   papel: string = "";
   loading: boolean = false;
-  papeisFavoritos: _model.AtivoDetalhesModel[] = [];
-  showModal : boolean =false;
-  private _papelFavoritoService!: IPapelFavoritoService
+  papeisFavoritos: _modelOutput.AtivoDetalhesOutputModel[] = [];
+  private _papelFavoritoService!: IPapelFavoritoService;
 
-  public recuperaPapeisFavoritos() {
-      this._papelFavoritoService
+  public async recuperaPapeisFavoritos() {
+    this._papelFavoritoService
       .recuperaPapeisFavoritos()
       .then((result) => {
         this.papeisFavoritos = result;
+
+        this.papeisFavoritos.forEach((item) => {
+          item.loading = true;
+          //recuperaDetalhesPorPapel(item)
+        });
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
+  public recuperaDetalhesPorPapel(papel: string) {}
 
-  mounted() {
+  public novoPapelFavorito() {
+    (this.$refs.dialogNovoPapelFavorito as Vue & {
+      show: () => boolean;
+    }).show();
+  }
+
+  async mounted() {
     this.loading = true;
     this._papelFavoritoService = myContainer.myContainer.get<
       IPapelFavoritoService
     >(TYPES.PapelFavoritoService);
 
-    this.recuperaPapeisFavoritos();
-
+    await this.recuperaPapeisFavoritos();
   }
 }
 </script>

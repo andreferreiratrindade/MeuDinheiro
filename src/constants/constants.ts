@@ -1,14 +1,14 @@
 export module Constants{
 
     export class Arquivo{
-        public static arquivoNotaCorretagemInfo : string = "ImportacaoNotaCorretagemInfo.json";
-        public static pathArquivoOriginalNotaCorretagem : string = "./arquivos/ArquivoOriginalNotaCorretagem";
+        public static arquivoOrdemInfo : string = "ImportacaoOrdemInfo.json";
+        public static pathArquivoOriginalOrdem : string = "./arquivos/ArquivoOriginalOrdem";
         public static pathNotasDeCorretagens : string = "./arquivos/notasDeCorretagens.json";
         public static pathArquivoPapelFavorito : string = "./arquivos/acoesMonitoradas.json";
 
     }
 
-    export class CV{
+    export  class TipoOrdem{
 
             public static COMPRA : string = "C";
             public static VENDA : string = "V";

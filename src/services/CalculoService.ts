@@ -1,6 +1,6 @@
 import { injectable, inject } from "inversify";
 import "reflect-metadata";
-import { _model } from "src/models/_models";
+import { _modelOutput } from "src/models/_modelsOutput";
 import { from } from "linq-to-typescript";
 import { ICalculoService } from "src/services/interfaces/ICalculoService";
 import { Constants } from "./../constants/constants";
@@ -8,22 +8,22 @@ import { Constants } from "./../constants/constants";
 @injectable()
 class CalculoService implements ICalculoService {
   public recuperaPosicaoAtualCarteira(
-    ordens: _model.OrdemModel[]
-  ): _model.PosicaoAtualModel[] {
-    let lst: _model.PosicaoAtualModel[] = [];
+    ordens: _modelOutput.OrdemOutputModel[]
+  ): _modelOutput.PosicaoAtualOutputModel[] {
+    let lst: _modelOutput.PosicaoAtualOutputModel[] = [];
 
     const group = from(ordens)
-      .groupBy(y => y.Titulo)
+      .groupBy(y => y.papel)
       .toArray();
 
     group.forEach(element => {
       let ordensTemp = element
-        .orderBy(y => y.DataPregao)
-        .thenBy(y => y.OrdemPosicao)
+        .orderBy(y => y.dataPregao)
+        .thenBy(y => y.ordemPosicao)
         .toArray();
       var posicaoAtual = this.recuperaPosicalAtualCarteiraPorPapel(ordensTemp);
       if (posicaoAtual != null) {
-        posicaoAtual.Papel = element.key;
+        posicaoAtual.papel = element.key;
         lst.push(posicaoAtual);
       }
     });
@@ -32,21 +32,21 @@ class CalculoService implements ICalculoService {
   }
 
   public recuperaPosicalAtualCarteiraPorPapel(
-    ordens: _model.OrdemModel[]
-  ): _model.PosicaoAtualModel | null {
+    ordens: _modelOutput.OrdemOutputModel[]
+  ): _modelOutput.PosicaoAtualOutputModel | null {
     let liquido: number = 0;
     let qtdEstoque: number = 0;
-    let posicaoAtual: _model.PosicaoAtualModel | null = null;
+    let posicaoAtual: _modelOutput.PosicaoAtualOutputModel | null = null;
 
     for (let index = 0; index < ordens.length; index++) {
       const ordemAtual = ordens[index];
 
-      if (ordemAtual.CV == Constants.CV.COMPRA) {
-        liquido += ordemAtual.PrecoAjuste * ordemAtual.Quantidade * -1;
-        qtdEstoque += ordemAtual.Quantidade;
-      } else if (ordemAtual.CV == Constants.CV.VENDA) {
-        liquido += ordemAtual.PrecoAjuste * ordemAtual.Quantidade;
-        qtdEstoque -= ordemAtual.Quantidade;
+      if (ordemAtual.tipoOrdem == Constants.TipoOrdem.COMPRA) {
+        liquido += ordemAtual.preco * ordemAtual.quantidade * -1;
+        qtdEstoque += ordemAtual.quantidade;
+      } else if (ordemAtual.tipoOrdem == Constants.TipoOrdem.VENDA) {
+        liquido += ordemAtual.preco * ordemAtual.quantidade;
+        qtdEstoque -= ordemAtual.quantidade;
       }
 
       if (qtdEstoque == 0) {
@@ -58,17 +58,18 @@ class CalculoService implements ICalculoService {
 
     if (liquido > 0) {
       posicaoAtual = {
-        PrecoMedio: liquido / qtdEstoque,
-        Quantidade: qtdEstoque,
-        Papel: ordens[0].Titulo,
-        ValorTotalPrecoMedio: liquido,
-        ValorTotal: 0,
-        Lucro: 0,
-        AtivoDetalhes: {
-          CotacaoAtual: 0,
-          Papel: "",
-          RazaoSocial: "",
-          Percentual: 0
+        precoMedio: liquido / qtdEstoque,
+        quantidade: qtdEstoque,
+        papel: ordens[0].papel,
+        valorTotalPrecoMedio: liquido,
+        valorTotal: 0,
+        lucro: 0,
+        ativoDetalhes: {
+          cotacaoAtual: 0,
+          papel: "",
+          razaoSocial: "",
+          percentual: 0,
+          loading:false
         }
       };
     }
@@ -77,38 +78,38 @@ class CalculoService implements ICalculoService {
   }
 
   public montaValoresPosicalAtual(
-    posicaoAtual: _model.PosicaoAtualModel
-  ): _model.PosicaoAtualModel {
-    posicaoAtual.ValorTotal =
-      posicaoAtual.AtivoDetalhes.CotacaoAtual * posicaoAtual.Quantidade;
-    posicaoAtual.Lucro =
-      posicaoAtual.ValorTotal - posicaoAtual.ValorTotalPrecoMedio;
+    posicaoAtual: _modelOutput.PosicaoAtualOutputModel
+  ): _modelOutput.PosicaoAtualOutputModel {
+    posicaoAtual.valorTotal =
+      posicaoAtual.ativoDetalhes.cotacaoAtual * posicaoAtual.quantidade;
+    posicaoAtual.lucro =
+      posicaoAtual.valorTotal - posicaoAtual.valorTotalPrecoMedio;
     return posicaoAtual;
   }
 
   public calculaLucroRealizado(
-    ordens: _model.OrdemModel[]
-  ): _model.LucroRealizado[] {
+    ordens: _modelOutput.OrdemOutputModel[]
+  ): _modelOutput.LucroRealizadoOutputModel[] {
     
-    let lucrosRealizados: _model.LucroRealizado[] = [];
+    let lucrosRealizados: _modelOutput.LucroRealizadoOutputModel[] = [];
 
     var ordensPorPapel = from(ordens)
-      .groupBy(x => x.Titulo)
+      .groupBy(x => x.papel)
       .toArray();
     ordensPorPapel.forEach(item => {
       var ordensTemp = item
-        .orderBy(x => x.DataPregao)
-        .thenBy(x => x.OrdemPosicao)
+        .orderBy(x => x.dataPregao)
+        .thenBy(x => x.ordemPosicao)
         .toArray();
       lucrosRealizados.push({
-        Lucro: this.calculaLucroRealizadoPorPapel(ordensTemp),
-        Papel: ordensTemp[0].Titulo
+        lucro: this.calculaLucroRealizadoPorPapel(ordensTemp),
+        papel: ordensTemp[0].papel
       });
     });
     return lucrosRealizados;
   }
 
-  public calculaLucroRealizadoPorPapel(ordens: _model.OrdemModel[]): number {
+  public calculaLucroRealizadoPorPapel(ordens: _modelOutput.OrdemOutputModel[]): number {
 
     let liquido = 0;
     let qtdEstoque = 0;
@@ -118,46 +119,46 @@ class CalculoService implements ICalculoService {
     for (let i = 0; i < ordens.length; i++) {
       var ordemAtual = ordens[i];
 
-      if (ordemAtual.CV == Constants.CV.COMPRA) {
-        liquido += ordemAtual.PrecoAjuste * ordemAtual.Quantidade * -1;
-        qtdEstoque += ordemAtual.Quantidade;
+      if (ordemAtual.tipoMercado == Constants.TipoOrdem.COMPRA) {
+        liquido += ordemAtual.preco * ordemAtual.quantidade * -1;
+        qtdEstoque += ordemAtual.quantidade;
 
         compraOuVendido = !compraOuVendido.length
-          ? Constants.CV.COMPRA
+          ? Constants.TipoOrdem.COMPRA
           : compraOuVendido;
 
         if (
-          compraOuVendido == Constants.CV.COMPRA &&
+          compraOuVendido == Constants.TipoOrdem.COMPRA &&
           liquido != 0 &&
           qtdEstoque != 0
         ) {
           precoMedio = Math.abs(liquido) / Math.abs(qtdEstoque);
         }
 
-        if (compraOuVendido == Constants.CV.VENDA) {
+        if (compraOuVendido == Constants.TipoOrdem.VENDA) {
           var calculo =
-            ordemAtual.Quantidade * precoMedio -
-            ordemAtual.PrecoAjuste * ordemAtual.Quantidade;
+            ordemAtual.quantidade * precoMedio -
+            ordemAtual.preco * ordemAtual.quantidade;
           calc.push(calculo);
         }
-      } else if (ordemAtual.CV == Constants.CV.VENDA) {
-        liquido += ordemAtual.PrecoAjuste * ordemAtual.Quantidade;
-        qtdEstoque -= ordemAtual.Quantidade;
+      } else if (ordemAtual.tipoOrdem == Constants.TipoOrdem.VENDA) {
+        liquido += ordemAtual.preco * ordemAtual.quantidade;
+        qtdEstoque -= ordemAtual.quantidade;
         compraOuVendido = !compraOuVendido.length
-          ? Constants.CV.VENDA
+          ? Constants.TipoOrdem.VENDA
           : compraOuVendido;
 
         if (
-          compraOuVendido == Constants.CV.VENDA &&
+          compraOuVendido == Constants.TipoOrdem.VENDA &&
           liquido != 0 &&
           qtdEstoque != 0
         ) {
           precoMedio = Math.abs(liquido) / Math.abs(qtdEstoque);
         }
-        if (compraOuVendido == Constants.CV.COMPRA) {
+        if (compraOuVendido == Constants.TipoOrdem.COMPRA) {
           var calculo =
-            ordemAtual.PrecoAjuste * ordemAtual.Quantidade -
-            ordemAtual.Quantidade * precoMedio;
+            ordemAtual.preco * ordemAtual.quantidade -
+            ordemAtual.quantidade * precoMedio;
           calc.push(calculo);
         }
       }

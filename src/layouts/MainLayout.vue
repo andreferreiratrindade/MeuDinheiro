@@ -21,7 +21,7 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      show-if-above
+     
       bordered
       content-class="bg-grey-1"
     >
@@ -59,16 +59,16 @@ const linksData = [
     link: '/#/PainelGerencial'
   },
   {
-    title: 'Notas de Corretagens',
+    title: 'Ordens',
     caption: '',
     icon: 'code',
-    link: '/#/NotaCorretagem'
+    link: '/#/Ordem'
   },
   {
     title: 'Upload Arquivo Corretagem',
     caption: '',
     icon: 'chat',
-    link: '/#/ArquivoNotaCorretagem'
+    link: '/#/ArquivoOrdem'
   }
 ];
 
