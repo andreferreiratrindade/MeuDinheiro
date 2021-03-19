@@ -32,6 +32,19 @@ class OrdemService implements IOrdemService {
 
     return  this._OrdemRepository.recuperaNotasCorretagens(this._authService.recuperaUsuarioLogado().uid);
   }
+
+  public  extrairOrdensDeArquivo(file: any):void{
+
+  //   let buffer=  Buffer.from(file);
+  //   pdf(buffer).then(function(data) {
+  //       debugger
+  // })
+  // .catch(function(error){
+  //     // handle exceptions
+  // })
+
+  }
+
 }
 
 export { OrdemService };

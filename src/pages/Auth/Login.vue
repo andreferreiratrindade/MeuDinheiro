@@ -56,7 +56,7 @@
                 color="purple-4"
                 class="full-width text-white"
                 label="Cadastre-se"
-                @click="$router.push('/register')"
+                @click="$router.push('/auth-register')"
               />
             </q-card-actions>
             <q-card-section class="text-center q-pa-sm">
