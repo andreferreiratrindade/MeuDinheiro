@@ -9,6 +9,7 @@ import { IOrdemRepository } from "src/repository/interfaces/IOrdemRepository";
 import { TYPES } from "src/config/types";
 import { IAuthService } from "./interfaces/IAuthService";
 
+
 @injectable()
 class OrdemService implements IOrdemService {
 
@@ -34,15 +35,26 @@ class OrdemService implements IOrdemService {
   }
 
   public  extrairOrdensDeArquivo(file: any):void{
+    file.text().then(textoJson=>{
+      let data= JSON.parse(textoJson);
+      data.forEach(element => {
+       
+        let ordemInputModel : _modelInput.OrdemInputModel = { 
+          
+          tipoOrdem: element.CV,
+          papel: element.Titulo,
+          quantidade: element.Quantidade,
+          preco: element.PrecoAjuste,
+          dataPregao: element.DataPregao,
+          ordemPosicao: element.OrdemPosicao ,
+          vlrOperacao: element.PrecoAjuste * element.Quantidade,
+          dayTrade: element.DayTrade,
+          usuarioId:this._authService.recuperaUsuarioLogado().uid,
+        };
+        this._OrdemRepository.add(ordemInputModel);
 
-  //   let buffer=  Buffer.from(file);
-  //   pdf(buffer).then(function(data) {
-  //       debugger
-  // })
-  // .catch(function(error){
-  //     // handle exceptions
-  // })
-
+      });
+    })
   }
 
 }

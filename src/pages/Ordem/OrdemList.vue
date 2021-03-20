@@ -35,27 +35,27 @@ export default class OrdemList extends Vue {
     {
       name: "OrdemPosicao",
       label: "Ordem",
-      field: "OrdemPosicao",
+      field: "ordemPosicao",
       align: "left",
     },
-    { name: "Papel", label: "Papel", field: "Papel", align: "left" },
+    { name: "Papel", label: "Papel", field: "papel", align: "left" },
     {
       name: "DataPregao",
       label: "Pregão",
-      field: "DataPregao",
+      field: "dataPregao",
       align: "left",
       format: (val: any) => `${new Date(val).toLocaleDateString()}`,
     },
     {
       name: "Quantidade",
       label: "Quantidade",
-      field: "Quantidade",
+      field: "quantidade",
       align: "left",
     },
     {
       name: "Preco",
       label: "Preço",
-      field: "Preco",
+      field: "preco",
       align: "left",
       format: (val: any) =>
         val.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
@@ -63,7 +63,7 @@ export default class OrdemList extends Vue {
     {
       name: "VlrOperacao",
       label: "Vlr. Operação",
-      field: "VlrOperacao",
+      field: "vlrOperacao",
       align: "left",
       format: (val: any) =>
         val.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
@@ -74,10 +74,12 @@ export default class OrdemList extends Vue {
   data: _modelOutput.OrdemOutputModel[] = [];
 
   recuperaNotasCorretagens() {
-    
+      
        this._OrdemService
       .recuperaNotasCorretagens() 
-      .then()
+      .then(result=>{
+        this.data = result;
+      })
       .catch()
       .finally()
  
@@ -88,11 +90,11 @@ export default class OrdemList extends Vue {
   }
 
 created() {
-     this.recuperaNotasCorretagens();
    this.loading = false;
     this._OrdemService = myContainer.myContainer.get<
       IOrdemService
     >(TYPES.OrdemService);
+     this.recuperaNotasCorretagens();
   }
 }
 </script>

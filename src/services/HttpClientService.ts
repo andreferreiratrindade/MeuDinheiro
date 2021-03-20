@@ -7,23 +7,22 @@ export class HttpClient implements IHttpClient {
     return new Promise<T>((resolve, reject) => {
       // extract the individual parameters
       const { url, requiresToken } = parameters;
-
+      
       // axios request options like headers etc
       const options: AxiosRequestConfig = {
         method: "get",
-
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          // "Origin":"http://localhost:8080",
-           "Content-Type": "text/html",
-          // "Access-Control-Request-Headers":"Content-Type, Accept",
-          "Access-Control-Allow-Methods": "GET"
+        
+        headers: { 
+          'Access-Control-Allow-Origin': '*',
+          'Origin':"*",
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
         }
       };
 
       // finally execute the GET request with axios:
       axios
-        .get(url, options)
+        .get(url)
         .then((response: any) => {
           resolve(response);
         })
@@ -33,6 +32,8 @@ export class HttpClient implements IHttpClient {
         });
     });
   }
+
+  
 
   post<T>(parameters: IHttpClientRequestParameters<T>): Promise<T> {
     return new Promise<T>((resolve, reject) => {

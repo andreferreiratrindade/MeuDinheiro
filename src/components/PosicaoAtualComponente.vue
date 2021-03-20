@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { IOrdemService } from "src/services/interfaces/IOrdemService";
 import { ICalculoService } from "src/services/interfaces/ICalculoService";
 import { IPosicaoAtualService } from "src/services/interfaces/IPosicaoAtualService";
@@ -52,44 +52,42 @@ import myContainer from "src/config/inversify.config";
 export default class PosicaoAtualComponente extends Vue {
   loading: boolean = true;
 
-  private _posicaoAtualService = myContainer.myContainer.get<
-    IPosicaoAtualService
-  >(TYPES.PosicaoAtualService);
+  private _posicaoAtualService !: IPosicaoAtualService;
 
   data: any[] = [];
-
+  
   resultados: any = { ValorTotal: 0, LucroTotal: 0 };
-  // recuperaPosicaoAtual() {
-  //   this._posicaoAtualService
-  //     .recuperaPosicaoAtualCarteira(ordens)
-  //     .then((result) => {
-  //       this.data = result;
-  //       this.resultados = {
-  //         ValorTotal: this.data.reduce(
-  //           (sum, current) => sum + current.ValorTotal,
-  //           0
-  //         ),
-  //         LucroTotal: this.data.reduce(
-  //           (sum, current) => sum + current.Lucro,
-  //           0
-  //         ),
-  //       };
-  //     })
-  //     .catch((reject) => {
-  //       console.log(reject);
-  //     })
-  //     .finally(() => {
-  //       this.loading = false;
-  //     });
-  // }
+  recuperaPosicaoAtual(ordens:_modelOutput.OrdemOutputModel[]) {
+    this.loading = true;
+    
+    this._posicaoAtualService
+      .recuperaPosicaoAtualCarteira(ordens)
+      .then((result) => {
+        this.data = result;
+        this.resultados = {
+          ValorTotal: this.data.reduce(
+            (sum, current) => sum + current.ValorTotal,
+            0
+          ),
+          LucroTotal: this.data.reduce(
+            (sum, current) => sum + current.Lucro,
+            0
+          ),
+        };
+      })
+      .catch((reject) => {
+        console.log(reject);
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
 
   mounted() {
-    this.loading = true;
     this._posicaoAtualService = myContainer.myContainer.get<
       IPosicaoAtualService
     >(TYPES.PosicaoAtualService);
 
-    // this.recuperaPosicaoAtual();
   }
 }
 </script>

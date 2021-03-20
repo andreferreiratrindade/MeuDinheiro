@@ -101,7 +101,7 @@ export default class DialogManterOrdemCorretagem extends Vue{
 	readonly refreshTable!: Function;
 
     public showModal : boolean = false;
-    private _OrdemService !: IOrdemService
+    private _OrdemService !: IOrdemService;
     public ordem : _modelInput.OrdemInputModel= {
     papel: "",
     quantidade: 0,
@@ -110,6 +110,7 @@ export default class DialogManterOrdemCorretagem extends Vue{
     ordemPosicao: 0,
     dayTrade: false,
     tipoOrdem : "",
+    vlrOperacao:0,
     usuarioId : ""
 
       }

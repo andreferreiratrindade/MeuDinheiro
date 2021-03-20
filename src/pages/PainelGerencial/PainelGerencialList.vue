@@ -1,10 +1,13 @@
 <template>
- <div class="q-pa-md" >
-   <div class="row  justify-around">
-    <posicao-atual-componente class="col-3"></posicao-atual-componente>
-    <lucro-realizado-componente class="col-3"></lucro-realizado-componente>   
-    <papeis-favoritos-componente class="col-3"></papeis-favoritos-componente>
-   </div>
+  <div class="q-pa-md">
+    <div class="row justify-around">
+      <posicao-atual-componente
+        class="col-3"
+        ref="posicaoAtualComp"
+      ></posicao-atual-componente>
+      <lucro-realizado-componente class="col-3"></lucro-realizado-componente>
+      <papeis-favoritos-componente class="col-3"></papeis-favoritos-componente>
+    </div>
   </div>
 </template>
 
@@ -13,9 +16,40 @@
 import { Component, Vue } from "vue-property-decorator";
 import PosicaoAtualComponente from "src/components/PosicaoAtualComponente.vue";
 import PapeisFavoritosComponente from "src/components/PapeisFavoritosComponente.vue";
-import LucroRealizadoComponente from "src/components/LucroRealizadoComponente.vue"
+import LucroRealizadoComponente from "src/components/LucroRealizadoComponente.vue";
+import { IOrdemService } from "src/services/interfaces/IOrdemService";
+import { _modelOutput } from "src/models/_modelsOutput";
+import myContainer from "../../config/inversify.config";
+import { TYPES } from "src/config/types";
+
 @Component({
-  components: { PosicaoAtualComponente, PapeisFavoritosComponente, LucroRealizadoComponente },
+  components: {
+    PosicaoAtualComponente,
+    PapeisFavoritosComponente,
+    LucroRealizadoComponente,
+  },
 })
-export default class PainelGerencialList extends Vue {}
+export default class PainelGerencialList extends Vue {
+  private _OrdemService!: IOrdemService;
+
+  recuperaNotasCorretagens() {
+    this._OrdemService.recuperaNotasCorretagens().then((result) => {
+      this.initComponentes(result);
+    });
+  }
+
+  initComponentes(ordens: _modelOutput.OrdemOutputModel[]) {
+    (this.$refs.posicaoAtualComp as Vue & {
+      recuperaPosicaoAtual: (ordens : _modelOutput.OrdemOutputModel[] )=> void ;
+    }).recuperaPosicaoAtual(ordens);
+  }
+
+  mounted() {
+    this._OrdemService = myContainer.myContainer.get<IOrdemService>(
+      TYPES.OrdemService
+    );
+
+    this.recuperaNotasCorretagens();
+  }
+}
 </script>
