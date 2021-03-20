@@ -20,7 +20,6 @@ export abstract class BaseRepository implements IWrite, IRead {
 
 
 	add(item: any, id: string): Promise<any> {
-
 		let idTemp = id ? id : this.db.collection(this._collectionName).doc().id;
 		item.id = idTemp;
 		return new Promise((resolve, reject) => {
@@ -43,7 +42,6 @@ export abstract class BaseRepository implements IWrite, IRead {
 				.where(filter.elemento, filter.tipoComparacao, filter.comparacao)
 				.get()
 				.then((result) => {
-					debugger
 						let lst: any[] = [];
 						result.forEach(function (doc: any) {
 

@@ -11,6 +11,8 @@ export namespace _modelInput {
     dataPregao: string;
     ordemPosicao: number ;
     dayTrade: boolean;
+    usuarioId:string;
+    vlrOperacao : number;
   }
 
   export interface UsuarioLoginInputModel {
