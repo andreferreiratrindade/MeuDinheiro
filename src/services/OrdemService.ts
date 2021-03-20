@@ -30,7 +30,14 @@ class OrdemService implements IOrdemService {
   }
 
   public  recuperaNotasCorretagens(): Promise<_modelOutput.OrdemOutputModel[]> {
-
+    // debugger
+    // var yahooFinance = require("yahoo-finance");
+    // yahooFinance.quote({
+    //   symbol: 'ITSA4.SA',
+    //   modules: [ 'price', 'summaryDetail' ] // see the docs for the full list
+    // }, function (err, quotes) {
+    //   console.log(quotes);
+    // });
     return  this._OrdemRepository.recuperaNotasCorretagens(this._authService.recuperaUsuarioLogado().uid);
   }
 

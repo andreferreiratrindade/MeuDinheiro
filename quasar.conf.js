@@ -75,7 +75,10 @@ module.exports = configure(function (/* ctx */) {
     devServer: {
       https: false,
       port: 8080,
-      
+      before (app) {
+        const cors = require('cors')
+        app.use(cors())
+      },
       open: true // opens browser window automatically
      
     },

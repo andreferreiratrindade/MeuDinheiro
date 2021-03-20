@@ -90,7 +90,7 @@ class CalculoService implements ICalculoService {
   public calculaLucroRealizado(
     ordens: _modelOutput.OrdemOutputModel[]
   ): _modelOutput.LucroRealizadoOutputModel[] {
-    
+    debugger
     let lucrosRealizados: _modelOutput.LucroRealizadoOutputModel[] = [];
 
     var ordensPorPapel = from(ordens)
@@ -119,7 +119,7 @@ class CalculoService implements ICalculoService {
     for (let i = 0; i < ordens.length; i++) {
       var ordemAtual = ordens[i];
 
-      if (ordemAtual.tipoMercado == Constants.TipoOrdem.COMPRA) {
+      if (ordemAtual.tipoOrdem == Constants.TipoOrdem.COMPRA) {
         liquido += ordemAtual.preco * ordemAtual.quantidade * -1;
         qtdEstoque += ordemAtual.quantidade;
 
