@@ -63,12 +63,6 @@ const linksData = [
     caption: '',
     icon: 'code',
     link: '/#/Ordem'
-  },
-  {
-    title: 'Upload Arquivo Corretagem',
-    caption: '',
-    icon: 'chat',
-    link: '/#/ArquivoOrdem'
   }
 ];
 

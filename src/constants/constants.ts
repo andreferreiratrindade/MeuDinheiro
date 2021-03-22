@@ -10,8 +10,8 @@ export module Constants{
 
     export  class TipoOrdem{
 
-            public static COMPRA : string = "C";
-            public static VENDA : string = "V";
+            public static COMPRA : string = "C"; // C
+            public static VENDA : string = "V"; // V
     }
 
 

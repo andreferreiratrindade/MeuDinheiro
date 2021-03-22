@@ -32,44 +32,30 @@ class PapelFavoritoService implements IPapelFavoritoService {
     return new Promise<_modelOutput.AtivoDetalhesOutputModel[]>((result, rejects) => {
       this._papelFavoritoRepository.find(filter).then(papeisTemp => {
 
-        let acoesMonitoradas: _modelOutput.AtivoDetalhesOutputModel[] = papeisTemp.map(y => {
-          return {
-            papel: y.papel,
-            razaoSocial: "",
-            cotacaoAtual: 0,
-            percentual: 0,
-            loading: false
-          }
+        let promises: any[] = [];
+        papeisTemp.forEach(element => {
+          promises.push(
+            this._ativoBovespaService
+              .recuperaDetalhesPapel(element.papel)
+              .then(result => {
+                return result;
+              })
+              .catch(reject => {
+                throw reject;
+              })
+          );
         });
 
-        result(acoesMonitoradas);
-      }).catch(err => { rejects(err) });
+        result(Promise.all(promises)
+          .then((promiseAllResult) => {
+            return promiseAllResult
+          })
+          .catch(reject => {
+            throw reject;
+          })
+        );
+      })
     });
-
-
-    //   let promises: any[] = [];
-    //   acoesTmp.forEach(element => {
-    //     promises.push(
-    //       this._ativoBovespaService
-    //         .recuperaDetalhesPapel(element.papel)
-    //         .then(result => {
-    //           return result;
-    //         })
-    //         .catch(reject => {
-    //           throw reject;
-    //         })
-    //     );
-    //   });
-
-    //   result(Promise.all(promises)
-    //     .then((promiseAllResult) => {
-    //       return promiseAllResult
-    //     })
-    //     .catch(reject => {
-    //       throw reject;
-    //     })
-    //   );
-    // })
   }
 
   public adicionarPapelFavorito(papelFavorito: _modelInput.PapelFavoritoInputModel): Promise<_helperModel.Notify> {

@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <upload-arquivo />
+    <upload-arquivo :refresh="recuperaNotasCorretagens"/>
     <q-table
       title="Ordens"
       :data="data"
@@ -74,11 +74,12 @@ export default class OrdemList extends Vue {
   data: _modelOutput.OrdemOutputModel[] = [];
 
   recuperaNotasCorretagens() {
-      
+      this.loading = true;
        this._OrdemService
       .recuperaNotasCorretagens() 
       .then(result=>{
         this.data = result;
+        this.loading = false;
       })
       .catch()
       .finally()
@@ -90,7 +91,6 @@ export default class OrdemList extends Vue {
   }
 
 created() {
-   this.loading = false;
     this._OrdemService = myContainer.myContainer.get<
       IOrdemService
     >(TYPES.OrdemService);

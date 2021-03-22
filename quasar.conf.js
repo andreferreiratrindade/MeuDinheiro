@@ -75,9 +75,16 @@ module.exports = configure(function (/* ctx */) {
     devServer: {
       https: false,
       port: 8080,
-      
-      open: true // opens browser window automatically
-     
+      proxy:{
+        "/fundamentus":{
+          target: 'https://fundamentus.com.br',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/fundamentus': ''
+          }
+        }
+      },
+      open: true, // opens browser window automatically
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

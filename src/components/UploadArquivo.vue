@@ -52,11 +52,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { IOrdemService } from "../services/interfaces/IOrdemService";
 import { injectable, inject } from "inversify";
 import { TYPES } from "src/config/types";
 import myContainer from "src/config/inversify.config";
+import { Func } from "mocha";
 @Component
 export default class UploadArquivo extends Vue {
   files: any = null;
@@ -71,6 +72,10 @@ export default class UploadArquivo extends Vue {
   get canUpload(): Boolean {
     return this.files !== null;
   }
+
+  
+  @Prop({ type: Function, default: () => false })
+	readonly refresh!: Function;
 
   cancelarArquivo(index: any) {
     this.uploadProgress[index] = {
@@ -115,7 +120,12 @@ export default class UploadArquivo extends Vue {
 
   __updateUploadProgress() {
     this.uploadProgress.forEach((element) => {
-      this._ordemService.extrairOrdensDeArquivo(element.file)
+      this.uploading = true;
+
+      this._ordemService.extrairOrdensDeArquivo(element.file);
+      this.uploading = null;
+      this.files = null;
+      this.refresh();
     });
   }
 

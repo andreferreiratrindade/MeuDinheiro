@@ -40,12 +40,13 @@ export default class LucroRealizadoComponente extends Vue {
   private _calculoServico = myContainer.myContainer.get<ICalculoService>(
     TYPES.CalculadoraService
   );
-  recuperaLucroRealizado() {
-    // let lucroRealizados = this._calculoServico.calculaLucroRealizado(ordens);
-    // this.totalLucroRealziado = lucroRealizados.reduce(
-    //   (sum, item) => sum + item.Lucro,
-    //   0
-    // );
+  recuperaLucroRealizado(ordens : _modelOutput.OrdemOutputModel[] ) {
+    
+    let lucroRealizados = this._calculoServico.calculaLucroRealizado(ordens);
+    
+    this.totalLucroRealziado = lucroRealizados.reduce(
+      (sum, item) => sum + item.lucro, 0
+    );
   }
 
   mounted() {
@@ -54,7 +55,6 @@ export default class LucroRealizadoComponente extends Vue {
       TYPES.CalculadoraService
     );
 
-    this.recuperaLucroRealizado();
   }
 }
 </script>

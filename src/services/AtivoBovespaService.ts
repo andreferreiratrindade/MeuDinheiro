@@ -12,11 +12,10 @@ class AtivoBovespaService implements IAtivoBovespaService {
     papel: string
   ): Promise<_modelOutput.AtivoDetalhesOutputModel> {
     const getParameters: IHttpClientRequestParameters<any> = {
-      url: `https://fundamentus.com.br/detalhes.php?papel=${papel}`,
+      url: `/fundamentus/detalhes.php?papel=${papel}`,
       requiresToken: false
     };
-
-    // just return httpClient.get (which is a promise) or again use async/await if you prefer
+    
     return httpClient.get<any>(getParameters).then(result => {
       const html = result.data; // Get the HTML from the HTTP request
       const $ = cheerio.load(html); // Load the HTML string into cheerio

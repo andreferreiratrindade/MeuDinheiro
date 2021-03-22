@@ -33,6 +33,7 @@ class PosicaoAtualService implements IPosicaoAtualService {
       ordens
     );
     posicalAtualLst.forEach(posicaoAtual => {
+
       promises.push(
         this._ativoBovespaService
           .recuperaDetalhesPapel(posicaoAtual.papel)

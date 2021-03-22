@@ -2,10 +2,10 @@
   <div class="q-pa-md">
     <div class="row justify-around">
       <posicao-atual-componente
-        class="col-3"
+        class="col-12"
         ref="posicaoAtualComp"
       ></posicao-atual-componente>
-      <lucro-realizado-componente class="col-3"></lucro-realizado-componente>
+      <lucro-realizado-componente class="col-3" ref="lucroRealizadoComp"></lucro-realizado-componente>
       <papeis-favoritos-componente class="col-3"></papeis-favoritos-componente>
     </div>
   </div>
@@ -39,9 +39,16 @@ export default class PainelGerencialList extends Vue {
   }
 
   initComponentes(ordens: _modelOutput.OrdemOutputModel[]) {
+
+    
+    (this.$refs.lucroRealizadoComp as Vue & {
+      recuperaLucroRealizado: (ordens : _modelOutput.OrdemOutputModel[] )=> void ;
+    }).recuperaLucroRealizado(ordens);
+
     (this.$refs.posicaoAtualComp as Vue & {
       recuperaPosicaoAtual: (ordens : _modelOutput.OrdemOutputModel[] )=> void ;
     }).recuperaPosicaoAtual(ordens);
+
   }
 
   mounted() {

@@ -27,10 +27,6 @@
             })
           }}</q-item-label>
         </q-item-section>
-
-        <q-item-section side>
-          {{ item.percentual }}
-        </q-item-section>
       </q-item>
     </q-list>
     <dialog-novo-papel-favorito
