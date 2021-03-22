@@ -2,7 +2,7 @@
   <div class="q-pa-md">
     <div class="row justify-around">
       <posicao-atual-componente
-        class="col-3"
+        class="col-12"
         ref="posicaoAtualComp"
       ></posicao-atual-componente>
       <lucro-realizado-componente class="col-3" ref="lucroRealizadoComp"></lucro-realizado-componente>

@@ -1,77 +1,15 @@
-  <template>
+<template>
   <div class="q-pa-md">
-    <q-toolbar class="bg-secondary text-white shadow-2">
-      <q-toolbar-title>Posição Atual</q-toolbar-title>
-    </q-toolbar>
-    <div></div>
-    <div class="q-pa-md row items-start q-gutter-md">
-      <q-card
-        class="my-card"
-        flat
-        bordered
-        v-for="(item, index) in data"
-        :key="index"
-        clickable
-        v-ripple
-        style="width: 100%"
-      >
-        <q-item>
-          <q-item-section>
-            <q-item-label> {{ item.papel }} </q-item-label>
-            <q-item-label>
-              {{
-                item.ativoDetalhes.cotacaoAtual.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })
-              }}
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-separator />
-
-        <q-item>
-          <q-item-section>
-            <q-item-label>Quantidade: {{ item.quantidade }} </q-item-label>
-            <q-item-label>
-              Preço Médio:{{
-                item.precoMedio.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })
-              }}
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-separator />
-
-        <q-item>
-          <q-item-section>
-            <q-item-label>
-              Valor Total:
-              {{
-                item.valorTotal.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })
-              }}
-            </q-item-label>
-            <q-item-label>
-              Lucro:
-              {{
-                item.lucro.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })
-              }}
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-card>
-    </div>
+    <q-table
+      title="Posição Atual"
+      :data="data"
+      :columns="colunas"
+      :loading="loading"
+    />
   </div>
 </template>
+
+
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
@@ -83,6 +21,7 @@ import { injectable, inject } from "inversify";
 import "reflect-metadata";
 import { TYPES } from "src/config/types";
 import myContainer from "src/config/inversify.config";
+import { debug } from "util";
 
 @Component
 export default class PosicaoAtualComponente extends Vue {
@@ -91,8 +30,64 @@ export default class PosicaoAtualComponente extends Vue {
   private _posicaoAtualService!: IPosicaoAtualService;
 
   data: any[] = [];
+  colunas : any[] = [
+        {
+          name: 'papel',
+          label: 'Papel',
+          align: 'left',
+          field: row => row.papel,
+          sortable: true
+        },
+        {
+          name: 'cotacaoAtual',
+          label: 'Cotação Atual',
+          align: 'left',
+          field: row => row.ativoDetalhes.cotacaoAtual,
+          format: val => val.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })
+        },
+         {
+          name: 'quantidade',
+          label: 'Quantidade',
+          align: 'left',
+          field: row => row.quantidade,
+        },
+        {
+          name: 'precoMedio',
+          label: 'Preço Medio',
+          align: 'left',
+          field: row => row.precoMedio,
+           format: val => val.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })
+        },
+        {
+          name: 'valorTotalPrecoMedio',
+          label: 'Valor Total',
+          align: 'left',
+          field: row => row.valorTotalPrecoMedio,
+           format: val => val.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })
+        },
+        {
+          name: 'lucro',
+          label: 'Lucro',
+          align: 'left',
+          field: row => row.lucro,
+           format: val => val.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })
+        }
+        ];
 
   resultados: any = { ValorTotal: 0, LucroTotal: 0 };
+
   recuperaPosicaoAtual(ordens: _modelOutput.OrdemOutputModel[]) {
     this.loading = true;
 
@@ -100,10 +95,9 @@ export default class PosicaoAtualComponente extends Vue {
       .recuperaPosicaoAtualCarteira(ordens)
       .then((result) => {
         this.data = result;
-
         this.resultados = {
           ValorTotal: this.data.reduce(
-            (sum, current) => sum + current.ValorTotal,
+            (sum, current) => sum + current.valorTotalPrecoMedio,
             0
           ),
           LucroTotal: this.data.reduce(
