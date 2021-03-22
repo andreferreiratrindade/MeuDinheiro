@@ -90,7 +90,6 @@ class CalculoService implements ICalculoService {
   public calculaLucroRealizado(
     ordens: _modelOutput.OrdemOutputModel[]
   ): _modelOutput.LucroRealizadoOutputModel[] {
-    debugger
     let lucrosRealizados: _modelOutput.LucroRealizadoOutputModel[] = [];
 
     var ordensPorPapel = from(ordens)

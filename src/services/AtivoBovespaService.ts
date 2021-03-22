@@ -12,7 +12,7 @@ class AtivoBovespaService implements IAtivoBovespaService {
     papel: string
   ): Promise<_modelOutput.AtivoDetalhesOutputModel> {
     const getParameters: IHttpClientRequestParameters<any> = {
-      url: `https://fundamentus.com.br/detalhes.php?papel=${papel}`,
+      url: `/fundamentus/detalhes.php?papel=${papel}`,
       requiresToken: false
     };
     

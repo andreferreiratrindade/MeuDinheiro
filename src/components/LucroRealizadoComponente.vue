@@ -43,6 +43,7 @@ export default class LucroRealizadoComponente extends Vue {
   recuperaLucroRealizado(ordens : _modelOutput.OrdemOutputModel[] ) {
     
     let lucroRealizados = this._calculoServico.calculaLucroRealizado(ordens);
+    
     this.totalLucroRealziado = lucroRealizados.reduce(
       (sum, item) => sum + item.lucro, 0
     );

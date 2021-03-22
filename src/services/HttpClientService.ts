@@ -10,13 +10,8 @@ export class HttpClient implements IHttpClient {
       
       // axios request options like headers etc
       const options: AxiosRequestConfig = {
-        method: "get",
-        
-        headers: { 
-          'Access-Control-Allow-Origin': '*',
-          'Origin':"*",
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+         headers: { 
+          'Access-Control-Allow-Origin': "*",
         }
       };
 

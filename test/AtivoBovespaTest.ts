@@ -11,6 +11,8 @@ describe('Ativo Bovespa Service', () => {
             let data : string = "abev3";
 
            return service.recuperaDetalhesPapel(data).then((result)=>{
+                console.log(data)
+
                 expect(result.cotacaoAtual > 1).to.equals(true);
            });
         })
