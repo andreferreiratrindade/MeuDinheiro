@@ -65,16 +65,9 @@ export abstract class BaseRepository implements IWrite, IRead {
 		});
 	}
 
-	delete(id: string): Promise<boolean> {
-		return new Promise((resolve, reject) => {
-			this.db.collection(this._collectionName).doc(id).set({ ...{ deletado: true } }, { merge: true })
-				.then(() => {
-					resolve();
-				}).catch((err : any) => {
-					reject(err);
-				});
-		});
-	}
+	
+
+
 	recuperaColletion(collection: string) {
 		return this.db.collection(collection);
 	}

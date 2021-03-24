@@ -38,4 +38,3 @@ export namespace _modelInput {
   }
 
 }
-export default model;
