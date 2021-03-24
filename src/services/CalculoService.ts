@@ -69,7 +69,7 @@ class CalculoService implements ICalculoService {
           papel: "",
           razaoSocial: "",
           percentual: 0,
-          loading:false
+          loading: false
         }
       };
     }
@@ -163,14 +163,123 @@ class CalculoService implements ICalculoService {
       }
 
       if (qtdEstoque == 0) {
-        
-       calc.push(liquido);
+
+        calc.push(liquido);
         liquido = 0;
         compraOuVendido = "";
       }
     }
 
     return from(calc).sum();
+  }
+
+  public RecuperaLucroPorCompetencia(ordens: _modelOutput.OrdemOutputModel[]
+  ): _modelOutput.LucroPorCompetenciaOutputModel[] {
+
+    const lucros = this.calculaLucroRealizadoPorCompetencia(ordens);
+    let lucroPorCompetenciaGroup = from(lucros)
+      .groupBy(x => x.competencia)
+      .toArray();
+
+    let lucroPorCompetencia: _modelOutput.LucroPorCompetenciaOutputModel[] = [];
+
+    lucroPorCompetenciaGroup.forEach(element => {
+      let somatorio = element.sum(x => x.valor);
+      lucroPorCompetencia.push({ competencia: element.key, valor: somatorio })
+    });
+
+    return from(lucroPorCompetencia).orderByDescending(x=>x.competencia).toArray();
+  }
+
+
+  public calculaLucroRealizadoPorCompetencia(
+    ordens: _modelOutput.OrdemOutputModel[]
+  ): _modelOutput.LucroPorCompetenciaOutputModel[] {
+    let lucrosPorCompetencia: _modelOutput.LucroPorCompetenciaOutputModel[] = [];
+
+    var ordensPorPapel = from(ordens)
+      .groupBy(x => x.papel)
+      .toArray();
+    ordensPorPapel.forEach(item => {
+      var ordensTemp = item
+        .orderBy(x => x.dataPregao)
+        .thenBy(x => x.ordemPosicao)
+        .toArray();
+      lucrosPorCompetencia.push(...this.calculaLucroRealizadoPorPapelEhCompetencia(ordensTemp));
+    });
+
+    return lucrosPorCompetencia;
+  }
+
+  public calculaLucroRealizadoPorPapelEhCompetencia(ordens: _modelOutput.OrdemOutputModel[]): _modelOutput.LucroPorCompetenciaOutputModel[] {
+
+    let liquido = 0;
+    let qtdEstoque = 0;
+    let ordensLucro: _modelOutput.LucroPorCompetenciaOutputModel[] = [];
+    let calc: number[] = [];
+    let precoMedio: number = 0;
+    let compraOuVendido: string = "";
+    for (let i = 0; i < ordens.length; i++) {
+      var ordemAtual = ordens[i];
+
+      if (ordemAtual.tipoOrdem == Constants.TipoOrdem.COMPRA) {
+        liquido += ordemAtual.preco * ordemAtual.quantidade * -1;
+        qtdEstoque += ordemAtual.quantidade;
+
+        compraOuVendido = !compraOuVendido.length
+          ? Constants.TipoOrdem.COMPRA
+          : compraOuVendido;
+
+        if (
+          compraOuVendido == Constants.TipoOrdem.COMPRA &&
+          liquido != 0 &&
+          qtdEstoque != 0
+        ) {
+          precoMedio = Math.abs(liquido) / Math.abs(qtdEstoque);
+        }
+
+        if (compraOuVendido == Constants.TipoOrdem.VENDA) {
+          var calculo =
+            ordemAtual.quantidade * precoMedio -
+            ordemAtual.preco * ordemAtual.quantidade;
+          calc.push(calculo);
+        }
+      } else if (ordemAtual.tipoOrdem == Constants.TipoOrdem.VENDA) {
+        liquido += ordemAtual.preco * ordemAtual.quantidade;
+        qtdEstoque -= ordemAtual.quantidade;
+        compraOuVendido = !compraOuVendido.length
+          ? Constants.TipoOrdem.VENDA
+          : compraOuVendido;
+
+        if (
+          compraOuVendido == Constants.TipoOrdem.VENDA &&
+          liquido != 0 &&
+          qtdEstoque != 0
+        ) {
+          precoMedio = Math.abs(liquido) / Math.abs(qtdEstoque);
+        }
+        if (compraOuVendido == Constants.TipoOrdem.COMPRA) {
+          var calculo =
+            ordemAtual.preco * ordemAtual.quantidade -
+            ordemAtual.quantidade * precoMedio;
+          calc.push(calculo);
+        }
+      }
+
+      if (qtdEstoque == 0) {
+      
+        let dataPregao  = new Date(ordemAtual.dataPregao);
+        ordensLucro.push(
+          {
+            competencia: (dataPregao.getFullYear() * 100 + (dataPregao.getMonth() + 1)),
+            valor: liquido
+          });
+        liquido = 0;
+        compraOuVendido = "";
+      }
+    }
+
+    return ordensLucro;
   }
 }
 

@@ -4,12 +4,13 @@ export namespace _modelOutput {
     arquivo: string;
   }
   export interface OrdemOutputModel {
+    id:string;
     tipoOrdem: string;
     papel: string;
     quantidade: number;
     preco: number;
     tipoMercado: string ;
-    dataPregao: string;
+    dataPregao: Date;
     ordemPosicao: number ;
     dayTrade: boolean;
 
@@ -52,5 +53,9 @@ export namespace _modelOutput {
     loading: boolean
   }
 
+   export interface LucroPorCompetenciaOutputModel{
+     competencia:number;
+      valor : number
+    
+   } 
 }
-export default model;

@@ -20,6 +20,8 @@ import { IOrdemRepository } from "src/repository/interfaces/IOrdemRepository";
 import { OrdemRepository } from "src/repository/OrdemRepository";
 import { IPapelFavoritoRepository } from "src/repository/interfaces/IPapelFavoritoRepository";
 import { PapelFavoritoRepository } from "src/repository/PapelFavoritoRepository";
+import { ILucroPorCompetenciaService } from "src/services/interfaces/ILucroPorCompetenciaService";
+import { LucroPorCompetenciaService } from "src/services/LucroPorCompetenciaService";
 
 const myContainer = new Container();
 myContainer.bind<ICalculoService>(TYPES.CalculadoraService).to(CalculoService);
@@ -61,4 +63,8 @@ myContainer
   .bind<IPapelFavoritoService>(TYPES.PapelFavoritoService)
   .to(PapelFavoritoService);
   
+  myContainer
+  .bind<ILucroPorCompetenciaService>(TYPES.LucrPorCompetenciaService)
+  .to(LucroPorCompetenciaService);
+
 export default { myContainer };

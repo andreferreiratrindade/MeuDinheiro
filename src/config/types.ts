@@ -4,6 +4,7 @@ const TYPES = {
     AtivoBovespaService: Symbol.for("AtivoBovespaService"),
     PosicaoAtualService: Symbol.for("PosicaoAtualService"),
     PapelFavoritoService: Symbol.for("PapelFavoritoService"),
+    LucrPorCompetenciaService: Symbol.for("LucroPorCompetenciaService"),
     UsuarioRepository: Symbol.for("UsuarioRepository"),
     UsuarioService: Symbol.for("UsuarioService"),
     AuthService: Symbol.for("AuthService"),

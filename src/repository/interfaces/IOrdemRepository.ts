@@ -4,4 +4,5 @@ import { IWrite } from "./IWirte";
 
 export interface IOrdemRepository extends IRead, IWrite{
     recuperaNotasCorretagens(usuarioId:string): Promise<_modelOutput.OrdemOutputModel[]>;
+    deletetarTotas(usuarioId:string):Promise<void>;
 }

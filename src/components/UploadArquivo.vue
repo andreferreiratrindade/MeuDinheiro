@@ -73,9 +73,8 @@ export default class UploadArquivo extends Vue {
     return this.files !== null;
   }
 
-  
   @Prop({ type: Function, default: () => false })
-	readonly refresh!: Function;
+  readonly refresh!: Function;
 
   cancelarArquivo(index: any) {
     this.uploadProgress[index] = {
@@ -122,10 +121,11 @@ export default class UploadArquivo extends Vue {
     this.uploadProgress.forEach((element) => {
       this.uploading = true;
 
-      this._ordemService.extrairOrdensDeArquivo(element.file);
-      this.uploading = null;
-      this.files = null;
-      this.refresh();
+      this._ordemService.extrairOrdensDeArquivo(element.file).finally(()=>{
+        this.uploading = null;
+        this.files = null;
+        this.refresh();
+      });
     });
   }
 

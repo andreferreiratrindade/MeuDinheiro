@@ -11,10 +11,26 @@ export class OrdemRepository extends BaseRepository implements IOrdemRepository 
         super();
         this._collectionName = "ordem";
     }
-  
+    deletetarTotas(usuarioId: string): Promise<void> {
+
+        return new Promise<void>((resolve, reject) => {
+            this.db.collection(this._collectionName)
+            .where("usuarioId", "==", usuarioId)
+            .get()
+            .then((result) => {
+                result.forEach(x => {
+                    this.db.collection(this._collectionName).doc(x.id).delete()
+                })
+                resolve()
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
 
     recuperaNotasCorretagens(usuarioId: string): Promise<_modelOutput.OrdemOutputModel[]> {
-        return new Promise<any>((resolve, reject) => {
+        return new Promise<_modelOutput.OrdemOutputModel[]>((resolve, reject) => {
 
             let query = this.db.collection(this._collectionName)
                 .where("usuarioId", "==", usuarioId)
